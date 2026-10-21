@@ -4,7 +4,14 @@
       "name": "code-review",
       "path": "skills/code-review",
       "files": [
-        "references",
+        "SKILL.md",
+        "references"
+      ]
+    },
+    "hello-world": {
+      "name": "hello-world",
+      "path": "skills/hello-world",
+      "files": [
         "SKILL.md"
       ]
     }
