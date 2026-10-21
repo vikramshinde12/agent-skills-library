@@ -1,0 +1,12 @@
+{
+  "skills": {
+    "code-review": {
+      "name": "code-review",
+      "path": "skills/code-review",
+      "files": [
+        "references",
+        "SKILL.md"
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+name: Generate Skills Registry
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'skills/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate registry.json
+        run: |
+          python -c '
+          import os, json
+
+          skills_dir = "skills"
+          registry = {}
+
+          if os.path.exists(skills_dir):
+              for skill in sorted(os.listdir(skills_dir)):
+                  skill_path = os.path.join(skills_dir, skill)
+                  if os.path.isdir(skill_path):
+                      files = os.listdir(skill_path)
+                      registry[skill] = {
+                          "name": skill,
+                          "path": f"skills/{skill}",
+                          "files": files
+                      }
+
+          with open("registry.json", "w") as f:
+              json.dump({"skills": registry}, f, indent=2)
+          '
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add registry.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update registry.json [skip ci]" && git push)
